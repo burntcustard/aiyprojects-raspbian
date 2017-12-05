@@ -24,6 +24,7 @@ The Google Assistant Library can be installed with:
 It is available for Raspberry Pi 2/3 only; Pi Zero is not supported.
 """
 
+import json
 import logging
 import subprocess
 import sys
@@ -55,6 +56,16 @@ def say_ip():
     aiy.audio.say('My IP address is %s' % ip_address.decode('utf-8'))
 
 
+def command_lookup(text):
+    """ Look up input text and return associated command name string. """
+
+    commandList = json.load(open('commands.json'))
+
+    for commandName, phrases in commandList.items():
+        if text in phrases:
+            return commandName
+
+
 def process_event(assistant, event):
     status_ui = aiy.voicehat.get_status_ui()
     if event.type == EventType.ON_START_FINISHED:
@@ -67,16 +78,10 @@ def process_event(assistant, event):
 
     elif event.type == EventType.ON_RECOGNIZING_SPEECH_FINISHED and event.args:
         print('You said:', event.args['text'])
-        text = event.args['text'].lower()
-        if text == 'power off':
+        command = command_lookup(event.args['text'].lower())
+        if command:
             assistant.stop_conversation()
-            power_off_pi()
-        elif text == 'reboot':
-            assistant.stop_conversation()
-            reboot_pi()
-        elif text == 'ip address':
-            assistant.stop_conversation()
-            say_ip()
+            globals()[command]()
 
     elif event.type == EventType.ON_END_OF_UTTERANCE:
         status_ui.status('thinking')

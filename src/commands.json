@@ -1,0 +1,11 @@
+{
+    "power_off_pi": [
+        "power off", "shut down"
+    ],
+    "reboot_pi": [
+        "reboot", "restart pi"
+    ],
+    "say_ip": [
+        "ip address", "what's your ip"
+    ]
+}
