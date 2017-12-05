@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 # Copyright 2017 Google Inc.
+# Modifications copyright 2017 John Evans
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -26,9 +27,9 @@ It is available for Raspberry Pi 2/3 only; Pi Zero is not supported.
 
 import json
 import logging
-import subprocess
 import sys
 
+import commands as localCommands
 import aiy.assistant.auth_helpers
 import aiy.audio
 import aiy.voicehat
@@ -39,21 +40,6 @@ logging.basicConfig(
     level=logging.INFO,
     format="[%(asctime)s] %(levelname)s:%(name)s:%(message)s"
 )
-
-
-def power_off_pi():
-    aiy.audio.say('Good bye!')
-    subprocess.call('sudo shutdown now', shell=True)
-
-
-def reboot_pi():
-    aiy.audio.say('See you in a bit!')
-    subprocess.call('sudo reboot', shell=True)
-
-
-def say_ip():
-    ip_address = subprocess.check_output("hostname -I | cut -d' ' -f1", shell=True)
-    aiy.audio.say('My IP address is %s' % ip_address.decode('utf-8'))
 
 
 def command_lookup(text):
@@ -81,7 +67,7 @@ def process_event(assistant, event):
         command = command_lookup(event.args['text'].lower())
         if command:
             assistant.stop_conversation()
-            globals()[command]()
+            getattr(localCommands, command)()
 
     elif event.type == EventType.ON_END_OF_UTTERANCE:
         status_ui.status('thinking')
