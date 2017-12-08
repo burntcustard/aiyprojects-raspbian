@@ -8,6 +8,7 @@ power_off_pi(), reboot_pi(), and say_ip() commands are taken from
 the ...local_commands_demo and share it's Copyright and License.
 """
 
+import platform
 import subprocess
 
 import aiy.audio
@@ -26,3 +27,21 @@ def reboot_pi():
 def say_ip():
     ip_address = subprocess.check_output("hostname -I | cut -d' ' -f1", shell=True)
     aiy.audio.say('My IP address is %s' % ip_address.decode('utf-8'))
+
+
+def os_info():
+    aiy.audio.say('I\'m running on', ' '.join(platform.linux_distribution()))
+
+
+def say_git_log(cmd):
+    this_path = __file__.rsplit('/',1)[0]
+    log = subprocess.check_output(cmd, cwd=this_path, shell=True)
+    aiy.audio.say(log.decode('utf-8'))
+
+
+def last_updated():
+    say_git_log('git log -1 --format="I was last updated %ar by %an"')
+
+
+def last_update_info():
+    say_git_log('git log -1 --format="My last update was... %s')

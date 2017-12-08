@@ -6,6 +6,15 @@
         "reboot", "restart pi"
     ],
     "say_ip": [
-        "ip address", "what's your ip"
+        "ip address", "what's your ip?"
+    ],
+    "os_info": [
+        "os info", "what os are you running?"
+    ],
+    "last_updated": [
+        "last updated", "when were you last updated", "when was your last update?"
+    ],
+    "last_update_info": [
+        "last update info", "what was in your last update?", "what was your last update"
     ]
 }

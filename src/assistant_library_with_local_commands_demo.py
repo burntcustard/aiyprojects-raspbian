@@ -29,7 +29,7 @@ import json
 import logging
 import sys
 
-import commands as localCommands
+import commands as local_commands
 import aiy.assistant.auth_helpers
 import aiy.audio
 import aiy.voicehat
@@ -45,11 +45,11 @@ logging.basicConfig(
 def command_lookup(text):
     """ Look up input text and return associated command name string. """
 
-    commandList = json.load(open('commands.json'))
+    command_list = json.load(open('commands.json'))
 
-    for commandName, phrases in commandList.items():
+    for command_name, phrases in command_list.items():
         if text in phrases:
-            return commandName
+            return command_name
 
 
 def process_event(assistant, event):
@@ -67,7 +67,7 @@ def process_event(assistant, event):
         command = command_lookup(event.args['text'].lower())
         if command:
             assistant.stop_conversation()
-            getattr(localCommands, command)()
+            getattr(local_commands, command)()
 
     elif event.type == EventType.ON_END_OF_UTTERANCE:
         status_ui.status('thinking')
