@@ -25,11 +25,17 @@
     "last_updated": [
         "last updated",
         "when were you last updated",
-        "when was your last update"
+        "when was your last update",
+        "who were you last updated by"
     ],
     "last_update_info": [
         "last update info",
+        "last update",
         "what was in your last update",
         "what was your last update"
+    ],
+    "last_update_both": [
+        "last update both",
+        "tell me about your last update"
     ]
 }

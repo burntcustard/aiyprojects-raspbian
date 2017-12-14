@@ -127,6 +127,8 @@ def say(words, lang=None, volume=None, pitch=None):
         volume = aiy.audio.get_tts_volume()
     if not pitch:
         pitch = aiy.audio.get_tts_pitch()
+    print('Response', words)
+    words.replace('&', 'and')
     aiy._drivers._tts.say(aiy.audio.get_player(), words, lang=lang, volume=volume, pitch=pitch)
 
 

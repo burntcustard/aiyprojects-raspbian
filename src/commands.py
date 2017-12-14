@@ -30,13 +30,12 @@ def say_ip():
 
 
 def os_info():
-    aiy.audio.say('I\'m running on' + ' '.join(platform.linux_distribution()))
+    aiy.audio.say('I\'m running on ' + ' '.join(platform.linux_distribution()))
 
 
 def get_language_code():
     lang_code_raw = aiy.i18n.get_language_code().replace('-', ' ').upper()
     lang_code_str = 'Text to speech is currently set to ' + lang_code_raw
-    print(lang_code_str)
     aiy.audio.say(lang_code_str)
 
 
@@ -51,4 +50,9 @@ def last_updated():
 
 
 def last_update_info():
-    say_git_log('git log -1 --format="My last update was... %s')
+    say_git_log('git log -1 --format="My last update was... %s"')
+
+
+def last_update_both():
+    last_updated()
+    last_update_info()
