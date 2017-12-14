@@ -54,6 +54,8 @@ def command_lookup(text):
 
 def process_event(assistant, event):
     status_ui = aiy.voicehat.get_status_ui()
+    status_ui.set_trigger_sound_wave('ding.wav')
+
     if event.type == EventType.ON_START_FINISHED:
         status_ui.status('ready')
         if sys.stdout.isatty():

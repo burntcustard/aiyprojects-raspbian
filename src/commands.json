@@ -1,20 +1,35 @@
 {
     "power_off_pi": [
-        "power off", "shut down"
+        "power off",
+        "shut down"
     ],
     "reboot_pi": [
-        "reboot", "restart pi"
+        "reboot",
+        "restart pi"
     ],
     "say_ip": [
-        "ip address", "what's your ip?"
+        "ip address",
+        "what's your ip",
+        "what's your ip address"
     ],
     "os_info": [
-        "os info", "what os are you running?"
+        "os info",
+        "operating system info",
+        "what os are you running",
+        "what operating system are you running"
+    ],
+    "get_language_code": [
+        "get language code",
+        "what language is text to speech"
     ],
     "last_updated": [
-        "last updated", "when were you last updated", "when was your last update?"
+        "last updated",
+        "when were you last updated",
+        "when was your last update"
     ],
     "last_update_info": [
-        "last update info", "what was in your last update?", "what was your last update"
+        "last update info",
+        "what was in your last update",
+        "what was your last update"
     ]
 }
