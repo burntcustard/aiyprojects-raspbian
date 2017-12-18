@@ -52,5 +52,9 @@
     "update": [
         "update from github",
         "install updates from github"
+    ],
+    "wake_on_lan": [
+        "wake up my PC",
+        "wake up my computer"
     ]
 }

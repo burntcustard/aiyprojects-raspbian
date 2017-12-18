@@ -1,4 +1,5 @@
 # Copyright 2017 Google Inc.
+# Modifications by John Evans
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -133,7 +134,7 @@ def say(words, lang=None, volume=None, pitch=None, ip=False):
     # Replace "shorthand" with real words
     words.replace('&', 'and')
 
-    # Restructure IP an address to be pronounced correctly:
+    # Restructure an IP address at the end to be pronounced correctly:
     if ip:
         words, ip_address = words.rsplit(' ', 1)
         ip_address = ' '.join(ip_address)

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # Copyright 2017 Google Inc.
-# Modifications copyright 2017 John Evans
+# Modifications by John Evans
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
