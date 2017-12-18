@@ -110,7 +110,7 @@ def play_audio(audio_data):
     player.play_bytes(audio_data, sample_width=AUDIO_SAMPLE_SIZE, sample_rate=AUDIO_SAMPLE_RATE_HZ)
 
 
-def say(words, lang=None, volume=None, pitch=None):
+def say(words, lang=None, volume=None, pitch=None, ip=False):
     """Says the given words in the given language with Google TTS engine.
 
     If lang is specified, e.g. "en-US", it will be used to say the given words.
@@ -127,8 +127,19 @@ def say(words, lang=None, volume=None, pitch=None):
         volume = aiy.audio.get_tts_volume()
     if not pitch:
         pitch = aiy.audio.get_tts_pitch()
-    print('Response', words)
+
+    print('Response:', words)
+
+    # Replace "shorthand" with real words
     words.replace('&', 'and')
+
+    # Restructure IP an address to be pronounced correctly:
+    if ip:
+        words, ip_address = words.rsplit(' ', 1)
+        ip_address = ' '.join(ip_address)
+        ip_address = ip_address.replace('.', 'dot')
+        words += ip_address
+
     aiy._drivers._tts.say(aiy.audio.get_player(), words, lang=lang, volume=volume, pitch=pitch)
 
 

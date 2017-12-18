@@ -7,10 +7,21 @@
         "reboot",
         "restart pi"
     ],
-    "say_ip": [
+    "say_local_ip": [
         "ip address",
         "what's your ip",
-        "what's your ip address"
+        "what's your ip address",
+        "local ip address",
+        "what's your local ip",
+        "what's your local ip address"
+    ],
+    "say_external_ip": [
+        "remote ip address",
+        "what's your remote ip",
+        "what's your remote ip address",
+        "external ip address",
+        "what's your external ip",
+        "what's your external ip address"
     ],
     "os_info": [
         "os info",
@@ -37,5 +48,9 @@
     "last_update_both": [
         "last update both",
         "tell me about your last update"
+    ],
+    "update": [
+        "update from github",
+        "install updates from github"
     ]
 }
