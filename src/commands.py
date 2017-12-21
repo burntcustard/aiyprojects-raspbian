@@ -24,20 +24,24 @@ commands.json specifies the phrases associated with calling these commands.
 
 import platform
 import subprocess
+import os.path
 
 import aiy.audio
 
 
-this_path = __file__.rsplit('/',1)[0]
+this_path = __file__.rsplit('/',1)[0] + '/'
 
 
 def run(cmd, cwd=this_path, shell=True):
     """Run a shell command in this directory and return the output"""
-    return subprocess.check_output(
-        cmd,         # The command to run
-        cwd=cwd,     # Set Current Working Directory
-        shell=shell  # It's probably a shell command
-    ).decode('utf-8')
+    try:
+        output = subprocess.check_output(
+            cmd, cwd=cwd, shell=shell
+        ).decode('utf-8')
+    except:
+        output = 'failed to execute command: ' + cmd
+    finally:
+        return output
 
 
 def power_off_pi():
@@ -51,14 +55,23 @@ def reboot_pi():
 
 
 def say_local_ip():
-    ip_address = run('hostname -I | cut -d' ' -f1')
-    aiy.audio.say('My local IP address is %s' % ip_address, ip=True)
+    ip_address = run('hostname -I | cut -d" " -f1')
+    if 'failed' in ip_address:
+        aiy.audio.say('Failed to get local IP address')
+    else:
+        aiy.audio.say('My local IP address is %s' % ip_address, ip=True)
 
 
 def say_external_ip():
     # Using IP of resolver1.opendns.com is a bit faster than it's domain name.
-    ip_address = run('dig myip.opendns.com @208.67.222.222')
-    aiy.audio.say('My external IP address is %s' % ip_address, ip=True)
+    ip_address = run('dig +short myip.opendns.com @208.67.222.222')
+    if 'failed' in ip_address:
+        run('sudo apt install dnsutils')
+        ip_address = run('dig +short myip.opendns.com @208.67.222.222')
+    if 'failed' in ip_address:
+        aiy.audio.say('Failed to get external IP address')
+    else:
+        aiy.audio.say('My external IP address is %s' % ip_address, ip=True)
     
 
 def os_info():
@@ -93,22 +106,39 @@ def update():
 
 
 def wake_on_lan(rerun=False):
-    # MAC address is personal but not private info. It's in a separate
-    # file mostly so that it doesn't get modified when updating etc.
+    """Wakes up a device by sending a magic packet to it's mac address
 
-    with open(this_path+'wol_mac_address.txt') as mac_address_file
-        mac_address = mac_addres_file.read().rstrip()
-    if not mac_address:
-        aiy.audio.say('Error trying to read the wake on lan mac address file')
+    A mac address is personal but not private info. It's in a separate
+    # file mostly just so that it doesn't get affected by updates etc.
+    """
+
+    file_path = this_path + 'wol_mac_address.txt'
+
+    # Does the mac address file exist? If not, create it with a default value:
+    if not os.path.isfile(file_path)
+        aiy.audio.say('Fill in the new mac address file to enable wake on lan')
+        with open(file_path, 'a') as file:
+            file.write('00:00:00:00:00:00')
         return
 
+    # Read the mac address file and check for error or default value:
+    with open(file_path) as mac_address_file:
+        mac_address = mac_address_file.read().rstrip()
+    if not mac_address:
+        aiy.audio.say('There was an issue trying to read the wake on lan address file')
+        return
+    elif mac_address is '00:00:00:00:00:00':
+        aiy.audio.say('Mac address file needs to be changed from it\'s default value')
+        return
+
+    # Run the wake on lan comand, installing wakeonlan if needed.
     wol_output = run('wakeonlan ' + mac_address)
     if 'Sending magic packet' in wol_output:
-        aiy.audio.say('Wakey wakey')
-    elif not rerun and 'currently not installed' in wol_output:
-        aiy.audio.say('Wake on lan was not installed, so I\'m install it now')
+        print('Waking up', mac_address)
+    elif not rerun and ('not installed' in wol_output or 'failed' in wol_output):
+        aiy.audio.say('Wake on lan failed. Trying to install it.')
         run('sudo apt install wakeonlan')
         wake_on_lan(rerun=True)
-        return  # TODO: Figure out if needed.
+        return
     else:
         aiy.audio.say('There was an issue trying to wake up your PC')
