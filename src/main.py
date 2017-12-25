@@ -41,8 +41,11 @@ logging.basicConfig(
     format="[%(asctime)s] %(levelname)s:%(name)s:%(message)s"
 )
 
+import os
+#this_path = __file__.rsplit('/',1)[0] + '/'
 
-this_path = __file__.rsplit('/',1)[0] + '/'
+this_path = os.path.dirname(os.path.abspath(__file__)) + '/'
+print('Test' + '. File: ' + this_path)
 
 
 def command_lookup(text):

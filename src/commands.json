@@ -17,6 +17,9 @@
     ],
     "say_external_ip": [
         "remote ip address",
+        "what's my ip",
+        "what's my ip address",
+        "what's my remote ip address",
         "what's your remote ip",
         "what's your remote ip address",
         "external ip address",

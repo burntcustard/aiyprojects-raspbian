@@ -32,14 +32,16 @@ import aiy.audio
 this_path = __file__.rsplit('/',1)[0] + '/'
 
 
-def run(cmd, cwd=this_path, shell=True):
+def run(cmd, cwd=this_path, shell=True, cmd_name=None):
     """Run a shell command in this directory and return the output"""
+    if cmd_name is None:
+        cmd_name = cmd
     try:
         output = subprocess.check_output(
             cmd, cwd=cwd, shell=shell
         ).decode('utf-8')
     except:
-        output = 'failed to execute command: ' + cmd
+        output = 'failed to execute command: ' + cmd_name
     finally:
         return output
 
@@ -101,7 +103,9 @@ def update():
     # TODO: "Are you sure? This'll delete local changes!"
     # TODO: Be able to pull from different branches
     # TODO: Test what the output of this actually is and maybe do processing
-    aiy.audio.say(run('git fetch --all; git reset --hard origin/master'))
+    aiy.audio.say(run(
+        'git fetch --all; git reset --hard origin/master', cmd_name='update'
+    ))
     # TODO: Exit script and make a service to restart it...
 
 
@@ -115,7 +119,7 @@ def wake_on_lan(rerun=False):
     file_path = this_path + 'wol_mac_address.txt'
 
     # Does the mac address file exist? If not, create it with a default value:
-    if not os.path.isfile(file_path)
+    if not os.path.isfile(file_path):
         aiy.audio.say('Fill in the new mac address file to enable wake on lan')
         with open(file_path, 'a') as file:
             file.write('00:00:00:00:00:00')
